@@ -1,7 +1,6 @@
 package com;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class PuzzleTile {
 
@@ -10,7 +9,12 @@ public class PuzzleTile {
     private int manhattenValue;
     private boolean isSolvable;
     private int fn;
-    private int earliestTurn;
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    private int currentTurn;
 
     public boolean isSolvable() {
         return isSolvable;
@@ -18,17 +22,17 @@ public class PuzzleTile {
 
     public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles, boolean isSolvable){
         this.puzzleTile = puzzleTile;
-        this.earliestTurn = earliestTurn;
+        this.currentTurn = earliestTurn;
         this.misplacedTiles = misplacedTiles;
-        this.fn = this.misplacedTiles + this.earliestTurn;
+        this.fn = this.misplacedTiles + this.currentTurn;
         this.isSolvable = isSolvable;
     }
 
     public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles){
         this.puzzleTile = puzzleTile;
-        this.earliestTurn = earliestTurn;
+        this.currentTurn = earliestTurn;
         this.misplacedTiles = misplacedTiles;
-        this.fn = this.misplacedTiles + this.earliestTurn;
+        this.fn = this.misplacedTiles + this.currentTurn;
         this.isSolvable = isSolvable;
     }
 
@@ -40,7 +44,7 @@ public class PuzzleTile {
     public String toString() {
         return "PuzzleTile{" +
                 "puzzleTile=" + Arrays.deepToString(puzzleTile) +
-                ", earliestTurn=" + earliestTurn +
+                ", earliestTurn=" + currentTurn +
                 ", misplacedTiles=" + misplacedTiles +
                 ", manhattenValue=" + manhattenValue +
                 ", fn=" + fn +

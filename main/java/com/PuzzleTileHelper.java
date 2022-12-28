@@ -3,7 +3,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-
 public class PuzzleTileHelper {
 
     final private Random random;
@@ -97,7 +96,77 @@ public class PuzzleTileHelper {
     }
 
     public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, PuzzleTile puzzleTile) {
+        int[][] basePuzzleTile = puzzleTile.getPuzzleTile();
+        int currentTurn = puzzleTile.getCurrentTurn();
 
+     OUTER:   for (int i = 0; i < basePuzzleTile.length; i++){
+            for (int j = 0; j < basePuzzleTile[i].length; j++){
+
+                if (basePuzzleTile[i][j] == 0){
+
+                    if (i < 2) {
+                        this.generateValidPuzzleSwapToBottom(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                    }
+
+                    if (i > 0) {
+                        this.generateValidPuzzleSwapToTop(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                    }
+
+                    if (j > 0){
+                        this.generateValidPuzzleSwapToLeft(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                    }
+
+                    if (j < 2){
+                        this.generateValidPuzzleSwapToRight(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                    }
+
+                    break OUTER;
+                }
+            }
+        }
+    }
+
+    private void generateValidPuzzleSwapToRight(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+        int swapNumber = basePuzzleTile[i][j + 1];
+        basePuzzleTile[i][j] = swapNumber;
+        basePuzzleTile[i][j  + 1] = 0;
+
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+    }
+
+    private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+        int swapNumber = basePuzzleTile[i][j - 1];
+        basePuzzleTile[i][j] = swapNumber;
+        basePuzzleTile[i][j - 1] = 0;
+
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+    }
+
+    private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+        int swapNumber = basePuzzleTile[i - 1][j];
+        basePuzzleTile[i][j] = swapNumber;
+        basePuzzleTile[i - 1][j] = 0;
+
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+    }
+
+    private int[][] copyArray(int[][] basePuzzleTile){
+        int[][]result = new int[basePuzzleTile.length][basePuzzleTile[0].length];
+
+        for (int i = 0; i < result.length; i++){
+            for (int j = 0; j < result[0].length; j++){
+                result[i][j] = basePuzzleTile[i][j];
+            }
+        }
+        return result;
+    }
+
+    private void generateValidPuzzleSwapToBottom(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+        int swapNumber = basePuzzleTile[i + 1][j];
+        basePuzzleTile[i][j] = swapNumber;
+        basePuzzleTile[i + 1][j] = 0;
+
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
     }
 
     public int[][] getRandomPuzzleTile(){

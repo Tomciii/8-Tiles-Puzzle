@@ -39,5 +39,6 @@ public class Puzzle {
         this.initiatePuzzleTile();
 
        this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.validPuzzleTiles.get(0));
+        System.out.println(this.validPuzzleTiles.size());
     }
 }
