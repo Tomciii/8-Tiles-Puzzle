@@ -23,8 +23,10 @@ public class Puzzle {
             int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
             startPosition = new PuzzleTile(puzzleTile,
                     this.currentTurn,
-                    this.puzzleTileHelper.calculateMisplacedTiles(puzzleTile),
-                    this.puzzleTileHelper.isSolvable(puzzleTile));
+                    this.puzzleTileHelper.calculateTotalManhattenDistance(puzzleTile),
+                    true,
+                    this.puzzleTileHelper.isSolvable(puzzleTile)
+                );
 
             if (startPosition.isSolvable()){
                 this.validPuzzleTiles.add(startPosition);
@@ -37,8 +39,6 @@ public class Puzzle {
 
     public void play(){
         this.initiatePuzzleTile();
-
-       this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.validPuzzleTiles.get(0));
-        System.out.println(this.validPuzzleTiles.size());
+        this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.validPuzzleTiles.get(0));
     }
 }

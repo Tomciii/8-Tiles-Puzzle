@@ -20,11 +20,18 @@ public class PuzzleTile {
         return isSolvable;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles, boolean isSolvable){
+    public PuzzleTile(int[][] puzzleTile, int currentTurn, int misplacedTiles, boolean isSolvable){
         this.puzzleTile = puzzleTile;
-        this.currentTurn = earliestTurn;
+        this.currentTurn = currentTurn;
         this.misplacedTiles = misplacedTiles;
         this.fn = this.misplacedTiles + this.currentTurn;
+        this.isSolvable = isSolvable;
+    }
+
+    public PuzzleTile(int[][] puzzleTile, int currentTurn, int manhattenValue, boolean solveWithManhattenValue,boolean isSolvable){
+        this.puzzleTile = puzzleTile;
+        this.currentTurn = currentTurn;
+        this.manhattenValue = manhattenValue;
         this.isSolvable = isSolvable;
     }
 
@@ -33,7 +40,6 @@ public class PuzzleTile {
         this.currentTurn = earliestTurn;
         this.misplacedTiles = misplacedTiles;
         this.fn = this.misplacedTiles + this.currentTurn;
-        this.isSolvable = isSolvable;
     }
 
     public int[][] getPuzzleTile() {
