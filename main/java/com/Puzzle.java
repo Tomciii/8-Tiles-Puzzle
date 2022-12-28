@@ -1,7 +1,6 @@
 package com;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Puzzle {
 
@@ -15,32 +14,32 @@ public class Puzzle {
         int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
         PuzzleTile puzzleTile1 = new PuzzleTile(puzzleTile);
 
-        System.out.println(puzzleTile1);
         this.validPuzzleTiles.add(puzzleTile1);
+        System.out.println(validPuzzleTiles.get(0));
     }
 
     public void play(){
         this.initiatePuzzleTile();
     };
 
-    public Set<PuzzleTile> getValidPuzzleTiles() {
+    public List<PuzzleTile> getValidPuzzleTiles() {
         return validPuzzleTiles;
     }
 
-    public void setValidPuzzleTiles(Set<PuzzleTile> validPuzzleTiles) {
+    public void setValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles) {
         this.validPuzzleTiles = validPuzzleTiles;
     }
 
-    public Set<PuzzleTile> getInvalidPuzzleTiles() {
+    public List<PuzzleTile> getInvalidPuzzleTiles() {
         return invalidPuzzleTiles;
     }
 
-    public void setInvalidPuzzleTiles(Set<PuzzleTile> invalidPuzzleTiles) {
+    public void setInvalidPuzzleTiles(List<PuzzleTile> invalidPuzzleTiles) {
         this.invalidPuzzleTiles = invalidPuzzleTiles;
     }
 
-    private Set<PuzzleTile> validPuzzleTiles;
-    private Set<PuzzleTile> invalidPuzzleTiles;
+    private List<PuzzleTile> validPuzzleTiles;
+    private List<PuzzleTile> invalidPuzzleTiles;
 
     public void setTurn(int turn) {
         this.turn = turn;
@@ -51,7 +50,7 @@ public class Puzzle {
     public Puzzle(){
         this.turn = 0;
         this.puzzleTileHelper = new PuzzleTileHelper();
-        this.validPuzzleTiles = new HashSet<>();
-        this.invalidPuzzleTiles = new HashSet<>();
+        this.validPuzzleTiles = new ArrayList<>();
+        this.invalidPuzzleTiles = new ArrayList<>();
     }
 }

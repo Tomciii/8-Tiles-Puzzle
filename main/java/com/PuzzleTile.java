@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class PuzzleTile {
 
-    private int[][] puzzleTile;
+    final private int[][] puzzleTile;
     private int misplacedTiles;
     private int manhattenValue;
     private int fn;
@@ -15,22 +15,32 @@ public class PuzzleTile {
 
     public PuzzleTile(int[][] puzzleTile){
         this.puzzleTile = puzzleTile;
+        this.misplacedTiles = this.calculateMisplacedTiles();
+    }
+
+    private int calculateMisplacedTiles() {
+        int result = 0;
+
+        int index = 0;
+        for (int i = 0; i < puzzleTile.length; i++){
+            for (int j = 0; j < puzzleTile[i].length;j++){
+                    if (puzzleTile[i][j] == index){
+                        result++;
+                    }
+
+                    index++;
+            }
+        }
+
+        return result;
     }
 
     public boolean isSolvable(){
         return false;
     }
 
-    public void setMisplacedTiles(int misplacedTiles) {
-        this.misplacedTiles = misplacedTiles;
-    }
-
     public int[][] getPuzzleTile() {
         return puzzleTile;
-    }
-
-    private void setPuzzleTile(int[][] puzzleTile) {
-        this.puzzleTile = puzzleTile;
     }
 
     @Override
