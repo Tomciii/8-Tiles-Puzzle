@@ -1,44 +1,35 @@
 package com;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class PuzzleTile {
 
     final private int[][] puzzleTile;
     private int misplacedTiles;
     private int manhattenValue;
+    private boolean isSolvable;
     private int fn;
     private int earliestTurn;
 
-    public int getMisplacedTiles() {
-        return misplacedTiles;
+    public boolean isSolvable() {
+        return isSolvable;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int earliestTurn){
+    public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles, boolean isSolvable){
         this.puzzleTile = puzzleTile;
         this.earliestTurn = earliestTurn;
-        this.misplacedTiles = this.calculateMisplacedTiles();
+        this.misplacedTiles = misplacedTiles;
+        this.fn = this.misplacedTiles + this.earliestTurn;
+        this.isSolvable = isSolvable;
     }
 
-    private int calculateMisplacedTiles() {
-        int result = 0;
-
-        int index = 0;
-        for (int i = 0; i < puzzleTile.length; i++){
-            for (int j = 0; j < puzzleTile[i].length;j++){
-                    if (puzzleTile[i][j] != index){
-                        result++;
-                    }
-
-                    index++;
-            }
-        }
-
-        return result;
-    }
-
-    public boolean isSolvable(){
-        return false;
+    public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles){
+        this.puzzleTile = puzzleTile;
+        this.earliestTurn = earliestTurn;
+        this.misplacedTiles = misplacedTiles;
+        this.fn = this.misplacedTiles + this.earliestTurn;
+        this.isSolvable = isSolvable;
     }
 
     public int[][] getPuzzleTile() {
@@ -53,7 +44,9 @@ public class PuzzleTile {
                 ", misplacedTiles=" + misplacedTiles +
                 ", manhattenValue=" + manhattenValue +
                 ", fn=" + fn +
-                ", isSolvable=" + isSolvable() +
+                ", isSolvable=" + isSolvable +
                 '}';
     }
+
+
 }

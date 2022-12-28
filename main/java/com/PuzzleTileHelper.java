@@ -1,4 +1,6 @@
 package com;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 
@@ -8,6 +10,62 @@ public class PuzzleTileHelper {
 
     public PuzzleTileHelper(){
         random = new Random();
+    }
+
+    public boolean isSolvable(int[][] puzzleTile){
+
+        boolean isPuzzleSidesEven = this.calculateIsPuzzleOdd(puzzleTile);
+        boolean isPuzzleValudesEven = this.isPuzzleValuesEven(puzzleTile);
+
+        return isPuzzleSidesEven ^ isPuzzleValudesEven;
+    }
+
+    private boolean isPuzzleValuesEven(int[][] puzzleTile) {
+        int[] flatArray = Arrays.stream(puzzleTile)
+                .flatMapToInt(Arrays::stream)
+                .toArray();
+
+        int result = 0;
+        for (int i = 0; i < flatArray.length; i++){
+
+            if (flatArray[i] == 0 || i == flatArray.length - 1){
+                continue;
+            }
+
+            for (int j = i + 1; j < flatArray.length; j++){
+
+                if (flatArray[j] == 0){
+                    continue;
+                }
+
+                if (flatArray[i] > flatArray[j]){
+                    result++;
+                }
+            }
+        }
+
+        return result % 2 == 0;
+    }
+
+    private boolean calculateIsPuzzleOdd(int[][] puzzleTile) {
+        return puzzleTile.length * puzzleTile[0].length % 2 == 0;
+    }
+
+    public int calculateMisplacedTiles(int[][] puzzleTile) {
+        int result = 0;
+
+        int index = 0;
+        for (int i = 0; i < puzzleTile.length; i++){
+            for (int j = 0; j < puzzleTile[i].length;j++){
+                if (puzzleTile[i][j] != index){
+                    result++;
+                }
+
+                index++;
+            }
+        }
+
+        return result;
     }
 
     private int[] getRandomNumbers(int lengthOfArray, int widthOfArray){
@@ -38,6 +96,9 @@ public class PuzzleTileHelper {
         return result;
     }
 
+    public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, PuzzleTile puzzleTile) {
+
+    }
 
     public int[][] getRandomPuzzleTile(){
         final int lengthOfArray = 3;
