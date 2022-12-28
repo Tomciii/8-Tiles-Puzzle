@@ -1,15 +1,26 @@
 package com;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Puzzle {
+
+    private PuzzleTileHelper puzzleTileHelper;
 
     public int getTurn() {
         return turn;
     }
 
-    public void play(){
+    private void initiatePuzzleTile(){
+        int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
+        PuzzleTile puzzleTile1 = new PuzzleTile(puzzleTile);
 
+        System.out.println(puzzleTile1);
+        this.validPuzzleTiles.add(puzzleTile1);
+    }
+
+    public void play(){
+        this.initiatePuzzleTile();
     };
 
     public Set<PuzzleTile> getValidPuzzleTiles() {
@@ -38,6 +49,9 @@ public class Puzzle {
     private int turn;
 
     public Puzzle(){
-        turn = 0;
+        this.turn = 0;
+        this.puzzleTileHelper = new PuzzleTileHelper();
+        this.validPuzzleTiles = new HashSet<>();
+        this.invalidPuzzleTiles = new HashSet<>();
     }
 }
