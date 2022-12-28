@@ -5,14 +5,15 @@ import java.util.*;
 public class Puzzle {
 
     private PuzzleTileHelper puzzleTileHelper;
+    private int currentTurn;
 
-    public int getTurn() {
-        return turn;
+    public int getCurrentTurn() {
+        return currentTurn;
     }
 
     private void initiatePuzzleTile(){
         int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
-        PuzzleTile puzzleTile1 = new PuzzleTile(puzzleTile);
+        PuzzleTile puzzleTile1 = new PuzzleTile(puzzleTile, this.currentTurn);
 
         this.validPuzzleTiles.add(puzzleTile1);
         System.out.println(validPuzzleTiles.get(0));
@@ -41,14 +42,12 @@ public class Puzzle {
     private List<PuzzleTile> validPuzzleTiles;
     private List<PuzzleTile> invalidPuzzleTiles;
 
-    public void setTurn(int turn) {
-        this.turn = turn;
+    public void setCurrentTurn(int currentTurn) {
+        this.currentTurn = currentTurn;
     }
 
-    private int turn;
-
     public Puzzle(){
-        this.turn = 0;
+        this.currentTurn = 0;
         this.puzzleTileHelper = new PuzzleTileHelper();
         this.validPuzzleTiles = new ArrayList<>();
         this.invalidPuzzleTiles = new ArrayList<>();
