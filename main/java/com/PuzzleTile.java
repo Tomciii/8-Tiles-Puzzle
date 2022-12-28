@@ -4,10 +4,15 @@ public class PuzzleTile {
 
     private int[][] puzzleTile;
     private int misplacedTiles;
+    private int manhattenValue;
     private int fn;
 
     public int getMisplacedTiles() {
         return misplacedTiles;
+    }
+
+    public boolean isSolvable(){
+        return false;
     }
 
     public void setMisplacedTiles(int misplacedTiles) {

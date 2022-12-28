@@ -8,6 +8,10 @@ public class Puzzle {
         return turn;
     }
 
+    public void play(){
+
+    };
+
     public Set<PuzzleTile> getValidPuzzleTiles() {
         return validPuzzleTiles;
     }
