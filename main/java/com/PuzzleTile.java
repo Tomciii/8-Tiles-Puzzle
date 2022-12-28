@@ -2,11 +2,14 @@ package com;
 
 import java.util.Arrays;
 
+/**
+ * A PuzzleTile represents a gameBoard and holds information about whether it's solvable etc.
+ */
 public class PuzzleTile {
 
     final private int[][] puzzleTile;
     private int misplacedTiles;
-    private int manhattenValue;
+    private int manhattenDistance;
     private boolean isSolvable;
     private int fn;
 
@@ -28,10 +31,10 @@ public class PuzzleTile {
         this.isSolvable = isSolvable;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int currentTurn, int manhattenValue, boolean solveWithManhattenValue,boolean isSolvable){
+    public PuzzleTile(int[][] puzzleTile, int currentTurn, int manhattenDistance, boolean solveWithManhattenValue,boolean isSolvable){
         this.puzzleTile = puzzleTile;
         this.currentTurn = currentTurn;
-        this.manhattenValue = manhattenValue;
+        this.manhattenDistance = manhattenDistance;
         this.isSolvable = isSolvable;
     }
 
@@ -52,7 +55,7 @@ public class PuzzleTile {
                 "puzzleTile=" + Arrays.deepToString(puzzleTile) +
                 ", earliestTurn=" + currentTurn +
                 ", misplacedTiles=" + misplacedTiles +
-                ", manhattenValue=" + manhattenValue +
+                ", manhattenValue=" + manhattenDistance +
                 ", fn=" + fn +
                 ", isSolvable=" + isSolvable +
                 '}';

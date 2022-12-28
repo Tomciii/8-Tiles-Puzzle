@@ -2,6 +2,9 @@ package com;
 
 import java.util.*;
 
+/**
+ * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
+ */
 public class Puzzle {
 
     private PuzzleTileHelper puzzleTileHelper;

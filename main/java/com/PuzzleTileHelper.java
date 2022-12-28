@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The PuzzleTileHelper Class holds all the business logic for intializing and generating new PuzzleTile instances.
+ */
 public class PuzzleTileHelper {
 
     final private Random random;
