@@ -7,9 +7,17 @@ import java.util.*;
  */
 public class Puzzle {
 
-    private PuzzleTileHelper puzzleTileHelper;
+    final private PuzzleTileHelper puzzleTileHelper;
     private int currentTurn;
+
+    /**
+     * The validPuzzleTiles list contains all PuzzleTiles that have not been traversed yet.
+     */
     private List<PuzzleTile> validPuzzleTiles;
+
+    /**
+     * The validPuzzleTiles list contains all PuzzleTiles that have been traversed.
+     */
     private List<PuzzleTile> invalidPuzzleTiles;
 
     public Puzzle(){
@@ -19,7 +27,10 @@ public class Puzzle {
         this.invalidPuzzleTiles = new ArrayList<>();
     }
 
-    private void initiatePuzzleTile(){
+    /**
+     * Generates the starting PuzzleTile, which has to be a solvable PuzzleTile.
+     */
+    private void generateStartingPuzzleTile(){
         PuzzleTile startPosition;
 
         do {
@@ -41,7 +52,7 @@ public class Puzzle {
     }
 
     public void play(){
-        this.initiatePuzzleTile();
+        this.generateStartingPuzzleTile();
         this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.validPuzzleTiles.get(0));
     }
 }
