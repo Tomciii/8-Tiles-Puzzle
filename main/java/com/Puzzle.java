@@ -56,6 +56,27 @@ public class Puzzle {
 
     public void play(){
         this.generateStartingPuzzleTile();
-        this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.validPuzzleTiles.get(0));
+        this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, this.validPuzzleTiles.get(0));
+
+        while(!this.isPuzzleSolved(this.pickLowestCostPuzzleTile())){
+            PuzzleTile puzzleTile = this.pickLowestCostPuzzleTile();
+            System.out.println("Generating New PuzzleTiles");
+            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, puzzleTile);
+            this.movePuzzleTileToInvalidList();
+        }
+
+        System.out.println("Puzzle Solved!");
+    }
+
+    private boolean isPuzzleSolved(PuzzleTile puzzleTile){
+        return puzzleTile.getCost() == this.currentTurn;
+    }
+
+    private void movePuzzleTileToInvalidList(){
+        this.invalidPuzzleTiles.add(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
+        this.validPuzzleTiles.remove(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
+    }
+    private PuzzleTile pickLowestCostPuzzleTile(){
+        return this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get();
     }
 }

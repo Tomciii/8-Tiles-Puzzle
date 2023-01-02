@@ -13,7 +13,7 @@ public class PuzzleTileHelper {
     final private Random random;
 
     public PuzzleTileHelper(){
-        random = new Random();
+        this.random = new Random();
     }
 
     public boolean isSolvable(int[][] puzzleTile){
@@ -83,7 +83,7 @@ public class PuzzleTileHelper {
         return result;
     }
 
-    public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, PuzzleTile puzzleTile) {
+    public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, PuzzleTile puzzleTile) {
         int[][] basePuzzleTile = puzzleTile.getPuzzleTile();
         int currentTurn = puzzleTile.getCurrentTurn();
 
@@ -93,19 +93,19 @@ public class PuzzleTileHelper {
                 if (basePuzzleTile[i][j] == 0){
 
                     if (i < 2) {
-                        this.generateValidPuzzleSwapToBottom(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                        this.generateValidPuzzleSwapToBottom(validPuzzleTiles, invalidPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
                     }
 
                     if (i > 0) {
-                        this.generateValidPuzzleSwapToTop(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                        this.generateValidPuzzleSwapToTop(validPuzzleTiles, invalidPuzzleTiles,this.copyArray(basePuzzleTile), currentTurn, i, j);
                     }
 
                     if (j > 0){
-                        this.generateValidPuzzleSwapToLeft(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                        this.generateValidPuzzleSwapToLeft(validPuzzleTiles, invalidPuzzleTiles,this.copyArray(basePuzzleTile), currentTurn, i, j);
                     }
 
                     if (j < 2){
-                        this.generateValidPuzzleSwapToRight(validPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
+                        this.generateValidPuzzleSwapToRight(validPuzzleTiles, invalidPuzzleTiles, this.copyArray(basePuzzleTile), currentTurn, i, j);
                     }
 
                     break OUTER;
@@ -114,36 +114,40 @@ public class PuzzleTileHelper {
         }
     }
 
-    private void generateValidPuzzleSwapToRight(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToRight(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i][j + 1];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i][j  + 1] = 0;
 
-        if (validPuzzleTiles.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile))){
+        if (isContainedInList(validPuzzleTiles, basePuzzleTile) || isContainedInList(invalidPuzzleTiles, basePuzzleTile)){
             return;
         }
 
         validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
-    private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i][j - 1];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i][j - 1] = 0;
 
-        if (validPuzzleTiles.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile))){
+        if (isContainedInList(validPuzzleTiles, basePuzzleTile) || isContainedInList(invalidPuzzleTiles, basePuzzleTile)){
             return;
         }
 
         validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
-    private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
+            return list.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile));
+    }
+
+    private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i - 1][j];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i - 1][j] = 0;
 
-        if (validPuzzleTiles.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile))){
+        if (isContainedInList(validPuzzleTiles, basePuzzleTile) || isContainedInList(invalidPuzzleTiles, basePuzzleTile)){
             return;
         }
 
@@ -161,12 +165,12 @@ public class PuzzleTileHelper {
         return result;
     }
 
-    private void generateValidPuzzleSwapToBottom(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToBottom(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i + 1][j];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i + 1][j] = 0;
 
-        if (validPuzzleTiles.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile))){
+        if (isContainedInList(validPuzzleTiles, basePuzzleTile) || isContainedInList(invalidPuzzleTiles, basePuzzleTile)){
             return;
         }
 

@@ -9,11 +9,21 @@ public class PuzzleTile {
 
     final private int[][] puzzleTile;
 
+    public int getCost() {
+        return cost;
+    }
+
+
     /**
      * Cost is either determined through manhatten distance or misplaced tiles.
      */
     private int cost;
     private boolean isSolvable;
+
+    public int getFn() {
+        return fn;
+    }
+
     private int fn;
 
     public int getCurrentTurn() {
