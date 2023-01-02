@@ -138,8 +138,8 @@ public class PuzzleTileHelper {
         validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
-    private boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
-            return list.stream().anyMatch(puzzle -> puzzle.getPuzzleTile().equals(basePuzzleTile));
+    public boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
+            return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzleTile(),basePuzzleTile));
     }
 
     private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
