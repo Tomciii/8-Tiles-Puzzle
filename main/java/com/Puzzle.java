@@ -1,6 +1,8 @@
 package com;
 
 import java.util.*;
+import java.util.function.Function;
+
 
 /**
  * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
@@ -9,6 +11,7 @@ public class Puzzle {
 
     final private PuzzleTileHelper puzzleTileHelper;
     private int currentTurn;
+    Function<int[][], Integer> costCalculator;
 
     /**
      * The validPuzzleTiles list contains all PuzzleTiles that have not been traversed yet.
@@ -20,7 +23,8 @@ public class Puzzle {
      */
     private List<PuzzleTile> invalidPuzzleTiles;
 
-    public Puzzle(){
+    public Puzzle(Function<int[][], Integer> costCalculator){
+        this.costCalculator = costCalculator;
         this.currentTurn = 0;
         this.puzzleTileHelper = new PuzzleTileHelper();
         this.validPuzzleTiles = new ArrayList<>();
@@ -37,8 +41,7 @@ public class Puzzle {
             int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
             startPosition = new PuzzleTile(puzzleTile,
                     this.currentTurn,
-                    this.puzzleTileHelper.calculateTotalManhattenDistance(puzzleTile),
-                    true,
+                    this.costCalculator.apply(puzzleTile),
                     this.puzzleTileHelper.isSolvable(puzzleTile)
                 );
 

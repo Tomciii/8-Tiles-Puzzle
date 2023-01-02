@@ -8,8 +8,11 @@ import java.util.Arrays;
 public class PuzzleTile {
 
     final private int[][] puzzleTile;
-    private int misplacedTiles;
-    private int manhattenDistance;
+
+    /**
+     * Cost is either determined through manhatten distance or misplaced tiles.
+     */
+    private int cost;
     private boolean isSolvable;
     private int fn;
 
@@ -23,27 +26,21 @@ public class PuzzleTile {
         return isSolvable;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int currentTurn, int misplacedTiles, boolean isSolvable){
+    public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost, boolean isSolvable){
         this.puzzleTile = puzzleTile;
         this.currentTurn = currentTurn;
-        this.misplacedTiles = misplacedTiles;
-        this.fn = this.misplacedTiles + this.currentTurn;
+        this.cost = cost;
+        this.fn = this.cost + this.currentTurn;
         this.isSolvable = isSolvable;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int currentTurn, int manhattenDistance, boolean solveWithManhattenValue,boolean isSolvable){
+    public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost){
         this.puzzleTile = puzzleTile;
         this.currentTurn = currentTurn;
-        this.manhattenDistance = manhattenDistance;
-        this.isSolvable = isSolvable;
+        this.cost = cost;
+        this.fn = this.cost + this.currentTurn;
     }
 
-    public PuzzleTile(int[][] puzzleTile, int earliestTurn, int misplacedTiles){
-        this.puzzleTile = puzzleTile;
-        this.currentTurn = earliestTurn;
-        this.misplacedTiles = misplacedTiles;
-        this.fn = this.misplacedTiles + this.currentTurn;
-    }
 
     public int[][] getPuzzleTile() {
         return puzzleTile;
@@ -54,8 +51,7 @@ public class PuzzleTile {
         return "PuzzleTile{" +
                 "puzzleTile=" + Arrays.deepToString(puzzleTile) +
                 ", earliestTurn=" + currentTurn +
-                ", misplacedTiles=" + misplacedTiles +
-                ", manhattenValue=" + manhattenDistance +
+                ", cost=" + cost +
                 ", fn=" + fn +
                 ", isSolvable=" + isSolvable +
                 '}';

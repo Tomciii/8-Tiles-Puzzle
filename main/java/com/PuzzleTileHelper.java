@@ -1,4 +1,6 @@
 package com;
+import com.costCalculator.MisplacedTilesDistanceCostCalculator;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -51,23 +53,6 @@ public class PuzzleTileHelper {
 
     private boolean calculateIsPuzzleOdd(int[][] puzzleTile) {
         return puzzleTile.length * puzzleTile[0].length % 2 == 0;
-    }
-
-    public int calculateMisplacedTiles(int[][] puzzleTile) {
-        int result = 0;
-
-        int index = 0;
-        for (int i = 0; i < puzzleTile.length; i++){
-            for (int j = 0; j < puzzleTile[i].length;j++){
-                if (puzzleTile[i][j] != index){
-                    result++;
-                }
-
-                index++;
-            }
-        }
-
-        return result;
     }
 
     private int[] getRandomNumbers(int lengthOfArray, int widthOfArray){
@@ -138,85 +123,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
-    }
-
-    public int calculateTotalManhattenDistance(int[][] puzzleTile){
-        int result = 0;
-
-        for (int i = 0; i < puzzleTile.length; i++){
-            for (int j = 0; j < puzzleTile[0].length; j++){
-                int tileNumber = puzzleTile[i][j];
-
-                if (tileNumber == 0){
-                    result += i;
-                    result += j;
-                    continue;
-                }
-
-                if (tileNumber == 1 ||tileNumber == 2){
-                    if (i == 1){
-                        result += 1;
-                    }
-
-                    if (i == 2){
-                        result += 2;
-                    }
-                }
-
-                if (tileNumber == 3 ||tileNumber == 4 || tileNumber == 5){
-                    if (i == 0){
-                        result += 1;
-                    }
-
-                    if (i == 2){
-                        result += 1;
-                    }
-                }
-
-                if (tileNumber == 6 ||tileNumber == 7 || tileNumber == 8){
-                    if (i == 0){
-                        result += 2;
-                    }
-
-                    if (i == 1){
-                        result += 1;
-                    }
-                }
-
-                if (tileNumber == 3 || tileNumber == 6){
-                    if (j == 1){
-                        result++;
-                    }
-
-                    if (j == 2){
-                        result += 2;
-                    }
-                }
-
-                if (tileNumber == 1 || tileNumber == 4 || tileNumber == 7){
-                    if (j == 0){
-                        result++;
-                    }
-
-                    if (j == 2){
-                        result += 1;
-                    }
-                }
-
-                if (tileNumber == 2 || tileNumber == 5 || tileNumber == 8){
-                    if (j == 0){
-                        result += 2;
-                    }
-
-                    if (j == 1){
-                        result += 1;
-                    }
-                }
-            }
-        }
-
-        return result;
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
     private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
@@ -228,7 +135,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
     private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
@@ -240,7 +147,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
     private int[][] copyArray(int[][] basePuzzleTile){
@@ -263,7 +170,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, this.calculateMisplacedTiles(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
     }
 
     public int[][] getRandomPuzzleTile(){
