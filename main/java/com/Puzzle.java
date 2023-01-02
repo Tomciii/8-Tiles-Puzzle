@@ -111,7 +111,7 @@ public class Puzzle {
      * @return
      */
     private boolean isPuzzleSolved(PuzzleTile currentPuzzleTile){
-        return Arrays.deepEquals(currentPuzzleTile.getPuzzle(),this.endPosition);
+        return Arrays.deepEquals(currentPuzzleTile.getPuzzleBoard(),this.endPosition);
     }
 
     private void movePuzzleTileToInvalidList(int index){

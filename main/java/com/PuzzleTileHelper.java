@@ -99,7 +99,7 @@ public class PuzzleTileHelper {
      * @param puzzleTile
      */
     public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, PuzzleTile puzzleTile) {
-        int[][] basePuzzleTile = puzzleTile.getPuzzle();
+        int[][] basePuzzleTile = puzzleTile.getPuzzleBoard();
         int currentTurn = puzzleTile.getCurrentTurn();
 
      OUTER:   for (int i = 0; i < basePuzzleTile.length; i++){
@@ -160,7 +160,7 @@ public class PuzzleTileHelper {
      * @return
      */
     public boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
-            return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzle(),basePuzzleTile));
+            return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzleBoard(),basePuzzleTile));
     }
 
     private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
