@@ -2,12 +2,14 @@ package com;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 /**
  * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
  */
 public class Puzzle {
+
+    private static final Logger logger = Logger.getLogger(Puzzle.class.getName());
 
     /**
      * Used to determine the duration of the program.
@@ -17,18 +19,18 @@ public class Puzzle {
     /**
      * An instance of the PuzzleTileHelper class.
      */
-    final private PuzzleTileHelper puzzleTileHelper;
+    private final PuzzleTileHelper puzzleTileHelper;
     private int currentTurn;
 
     /**
      * Instance of the CostCalculator, passed down from the entry point.
      */
-    final private Function<int[][], Integer> costCalculator;
+    private final Function<int[][], Integer> costCalculator;
 
     /**
      * The end position to solve the puzzle.
      */
-    final private int[][] endPosition = {{0,1,2},{3,4,5},{6,7,8}};
+    private final int[][] endPosition = {{0,1,2},{3,4,5},{6,7,8}};
 
     /**
      * The validPuzzleTiles list contains all PuzzleTiles that have not been traversed yet.
@@ -53,7 +55,8 @@ public class Puzzle {
      */
     private void generateStartingPuzzleTile(){
         PuzzleTile startPosition;
-        System.out.println("Generating Initial PuzzleTile..");
+
+        logger.info("Generating initial PuzzleTile...");
 
         do {
             int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
@@ -62,10 +65,10 @@ public class Puzzle {
                     this.costCalculator.apply(puzzleTile),
                     this.puzzleTileHelper.isSolvable(puzzleTile)
                 );
-        } while (startPosition.isSolvable() == false);
+        } while (!startPosition.isSolvable());
 
         this.validPuzzleTiles.add(startPosition);
-        System.out.println(validPuzzleTiles.get(0));
+        logger.info(this.validPuzzleTiles.get(0).toString());
         this.currentTurn++;
     }
 
@@ -81,14 +84,15 @@ public class Puzzle {
         final double endTime = System.nanoTime();
         final double duration = (endTime - this.startTime) / 1_000_000;
 
-        System.out.format("Duration taken in milli seconds: " + duration);
+        logger.info("Duration taken in milli seconds: " + duration);
     }
 
     /**
      * Loops through the lowest cost Puzzle Tiles, checks
      */
     private void solvePuzzle() {
-        System.out.println("Solving Puzzle..");
+
+        logger.info("Solving Puzzle..");
 
         while(!this.isPuzzleSolved(this.getLowestCostPuzzleTile())){
             int index = this.getLowestCostPuzzleTileIndex();
@@ -97,8 +101,8 @@ public class Puzzle {
             this.movePuzzleTileToInvalidList(index);
         }
 
-        System.out.println("Puzzle Solved!");
-        System.out.println(this.getLowestCostPuzzleTile());
+        logger.info("Puzzle Solved!");
+        logger.info(this.getLowestCostPuzzleTile().toString());
     }
 
     /**
@@ -107,7 +111,7 @@ public class Puzzle {
      * @return
      */
     private boolean isPuzzleSolved(PuzzleTile currentPuzzleTile){
-        return Arrays.deepEquals(currentPuzzleTile.getPuzzleTile(),this.endPosition);
+        return Arrays.deepEquals(currentPuzzleTile.getPuzzle(),this.endPosition);
     }
 
     private void movePuzzleTileToInvalidList(int index){

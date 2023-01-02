@@ -17,7 +17,7 @@ public class PuzzleTileHelperTest {
         List<PuzzleTile> puzzleTileList = this.getListWithPuzzleTile();
         PuzzleTile puzzleTile = this.getPuzzleTile();
 
-        Assertions.assertTrue(this.puzzleTileHelper.isContainedInList(puzzleTileList,puzzleTile.getPuzzleTile()));
+        Assertions.assertTrue(this.puzzleTileHelper.isContainedInList(puzzleTileList,puzzleTile.getPuzzle()));
     }
 
     private List<PuzzleTile> getListWithPuzzleTile() {

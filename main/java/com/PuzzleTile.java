@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class PuzzleTile {
 
-    final private int[][] puzzleTile;
+    private final int[][] puzzle;
 
     public int getCost() {
         return cost;
@@ -43,7 +43,7 @@ public class PuzzleTile {
     }
 
     public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost, boolean isSolvable){
-        this.puzzleTile = puzzleTile;
+        this.puzzle = puzzleTile;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
@@ -51,21 +51,21 @@ public class PuzzleTile {
     }
 
     public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost){
-        this.puzzleTile = puzzleTile;
+        this.puzzle = puzzleTile;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
     }
 
 
-    public int[][] getPuzzleTile() {
-        return puzzleTile;
+    public int[][] getPuzzle() {
+        return puzzle;
     }
 
     @Override
     public String toString() {
         return "PuzzleTile{" +
-                "puzzleTile=" + Arrays.deepToString(puzzleTile) +
+                "puzzleTile=" + Arrays.deepToString(puzzle) +
                 ", earliestTurn=" + currentTurn +
                 ", cost=" + cost +
                 ", fn=" + fn +
