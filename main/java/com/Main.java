@@ -8,7 +8,7 @@ import com.costCalculator.MisplacedTilesDistanceCostCalculator;
  */
 public class Main {
     public static void main(String[] args) {
-        Puzzle puzzle = new Puzzle(ManhattenDistanceCostCalculator.calculateCost);
+        Puzzle puzzle = new Puzzle(MisplacedTilesDistanceCostCalculator.calculateCost);
         puzzle.solve();
     }
 }

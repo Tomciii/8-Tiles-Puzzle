@@ -1,5 +1,6 @@
 package com;
 
+import com.costCalculator.ManhattenDistanceCostCalculator;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class PuzzleTileHelperTest {
 
-    private PuzzleTileHelper puzzleTileHelper = new PuzzleTileHelper();
+    private PuzzleTileHelper puzzleTileHelper = new PuzzleTileHelper(ManhattenDistanceCostCalculator.calculateCost);
 
     @Test
     public void testIsContainedInList(){

@@ -17,13 +17,20 @@ public class PuzzleTile {
      * Cost is either determined through manhatten distance or misplaced tiles.
      */
     private int cost;
+
+    /**
+     * Only used for the initializing PuzzleTile
+     */
     private boolean isSolvable;
+
+    /**
+     * Fn = Current turn + cost.
+     */
+    private int fn;
 
     public int getFn() {
         return fn;
     }
-
-    private int fn;
 
     public int getCurrentTurn() {
         return currentTurn;

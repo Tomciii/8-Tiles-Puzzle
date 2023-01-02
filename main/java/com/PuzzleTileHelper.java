@@ -1,27 +1,36 @@
 package com;
-import com.costCalculator.MisplacedTilesDistanceCostCalculator;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * The PuzzleTileHelper Class holds all the business logic for intializing and generating new PuzzleTile instances.
  */
 public class PuzzleTileHelper {
 
+    /**
+     * Instance of the Random class.
+     */
     final private Random random;
 
-    public PuzzleTileHelper(){
+    /**
+     * Instance of the CostCalculator, passed down from the entry point.
+     */
+    final private Function<int[][], Integer> costCalculator;
+
+    public PuzzleTileHelper(Function<int[][], Integer> costCalculator){
         this.random = new Random();
+        this.costCalculator = costCalculator;
     }
 
     public boolean isSolvable(int[][] puzzleTile){
 
-        boolean isPuzzleSidesEven = this.calculateIsPuzzleOdd(puzzleTile);
-        boolean isPuzzleValudesEven = this.isPuzzleValuesEven(puzzleTile);
+        boolean isPuzzleSidesEven = this.calculateIsPuzzleEven(puzzleTile);
+        boolean isPuzzleValuesEven = this.isPuzzleValuesEven(puzzleTile);
 
-        return isPuzzleSidesEven ^ isPuzzleValudesEven;
+        return isPuzzleSidesEven ^ isPuzzleValuesEven;
     }
 
     private boolean isPuzzleValuesEven(int[][] puzzleTile) {
@@ -51,7 +60,7 @@ public class PuzzleTileHelper {
         return result % 2 == 0;
     }
 
-    private boolean calculateIsPuzzleOdd(int[][] puzzleTile) {
+    private boolean calculateIsPuzzleEven(int[][] puzzleTile) {
         return puzzleTile.length * puzzleTile[0].length % 2 == 0;
     }
 
@@ -83,6 +92,12 @@ public class PuzzleTileHelper {
         return result;
     }
 
+    /**
+     * Creates all the possible PuzzleTiles it can create and checks if they dont already exist.
+     * @param validPuzzleTiles
+     * @param invalidPuzzleTiles
+     * @param puzzleTile
+     */
     public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, PuzzleTile puzzleTile) {
         int[][] basePuzzleTile = puzzleTile.getPuzzleTile();
         int currentTurn = puzzleTile.getCurrentTurn();
@@ -123,7 +138,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
@@ -135,9 +150,15 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
+    /**
+     * Checks if a PuzzleTile is contained in a certain list, to help determine whether Tile was already created.
+     * @param list
+     * @param basePuzzleTile
+     * @return
+     */
     public boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
             return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzleTile(),basePuzzleTile));
     }
@@ -151,7 +172,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     private int[][] copyArray(int[][] basePuzzleTile){
@@ -174,7 +195,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     public int[][] getRandomPuzzleTile(){

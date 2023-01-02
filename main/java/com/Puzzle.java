@@ -2,17 +2,33 @@ package com;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
  */
 public class Puzzle {
 
+    /**
+     * Used to determine the duration of the program.
+     */
     private final long startTime = System.nanoTime();
+
+    /**
+     * An instance of the PuzzleTileHelper class.
+     */
     final private PuzzleTileHelper puzzleTileHelper;
     private int currentTurn;
-    Function<int[][], Integer> costCalculator;
-    private int[][] endPosition = {{0,1,2},{3,4,5},{6,7,8}};
+
+    /**
+     * Instance of the CostCalculator, passed down from the entry point.
+     */
+    final private Function<int[][], Integer> costCalculator;
+
+    /**
+     * The end position to solve the puzzle.
+     */
+    final private int[][] endPosition = {{0,1,2},{3,4,5},{6,7,8}};
 
     /**
      * The validPuzzleTiles list contains all PuzzleTiles that have not been traversed yet.
@@ -27,7 +43,7 @@ public class Puzzle {
     public Puzzle(Function<int[][], Integer> costCalculator){
         this.costCalculator = costCalculator;
         this.currentTurn = 0;
-        this.puzzleTileHelper = new PuzzleTileHelper();
+        this.puzzleTileHelper = new PuzzleTileHelper(costCalculator);
         this.validPuzzleTiles = new ArrayList<>();
         this.invalidPuzzleTiles = new ArrayList<>();
     }
@@ -45,15 +61,13 @@ public class Puzzle {
                     this.costCalculator.apply(puzzleTile),
                     this.puzzleTileHelper.isSolvable(puzzleTile)
                 );
+        } while (startPosition.isSolvable() == false);
 
-            if (startPosition.isSolvable()){
-                this.validPuzzleTiles.add(startPosition);
-                System.out.println(validPuzzleTiles.get(0));
-            }
-        } while (!startPosition.isSolvable());
-
+        this.validPuzzleTiles.add(startPosition);
+        System.out.println(validPuzzleTiles.get(0));
         this.currentTurn++;
     }
+
 
     public void solve(){
         System.out.println("Generating Initial PuzzleTile..");
@@ -70,16 +84,29 @@ public class Puzzle {
         System.out.println(duration);
     }
 
+    /**
+     * Loops through the lowest cost Puzzle Tiles, checks
+     */
     private void solvePuzzle() {
+
         while(!this.isPuzzleSolved(this.getLowestCostPuzzleTile())){
-            PuzzleTile puzzleTile = this.getLowestCostPuzzleTile();
-            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, puzzleTile);
+            PuzzleTile currentPuzzleTile = this.getLowestCostPuzzleTile();
+            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, currentPuzzleTile);
             this.movePuzzleTileToInvalidList();
+            if (this.validPuzzleTiles.size() == 0){
+                System.out.println();
+            }
+            System.out.println(currentPuzzleTile.getCurrentTurn() + " " + currentPuzzleTile.getCost());
         }
     }
 
-    private boolean isPuzzleSolved(PuzzleTile puzzleTile){
-        return Arrays.deepEquals(puzzleTile.getPuzzleTile(),this.endPosition);
+    /**
+     * Compares the currentPuzzleTile with the endposition.
+     * @param currentPuzzleTile
+     * @return
+     */
+    private boolean isPuzzleSolved(PuzzleTile currentPuzzleTile){
+        return Arrays.deepEquals(currentPuzzleTile.getPuzzleTile(),this.endPosition);
     }
 
     private void movePuzzleTileToInvalidList(){
@@ -88,6 +115,16 @@ public class Puzzle {
     }
 
     private PuzzleTile getLowestCostPuzzleTile(){
-        return this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get();
+
+            List<PuzzleTile> list = this.validPuzzleTiles.stream().filter(a -> a.getFn() == this.validPuzzleTiles.stream().min(Comparator.comparing(PuzzleTile::getFn)).get().getFn()).collect(Collectors.toList());
+            if (list.size() > 2){
+               return list.stream().min(Comparator.comparing(PuzzleTile::getCost)).get();
+            }
+
+                Optional<PuzzleTile> result = this.validPuzzleTiles
+                        .stream()
+                        .min(Comparator.comparing(puzzleTile -> puzzleTile.getFn()));
+
+            return result.get();
     }
 }
