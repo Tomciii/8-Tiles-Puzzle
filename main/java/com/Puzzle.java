@@ -12,7 +12,7 @@ public class Puzzle {
     /**
      * Used to determine the duration of the program.
      */
-    private final long startTime = System.nanoTime();
+    private final double startTime = System.nanoTime();
 
     /**
      * An instance of the PuzzleTileHelper class.
@@ -53,6 +53,7 @@ public class Puzzle {
      */
     private void generateStartingPuzzleTile(){
         PuzzleTile startPosition;
+        System.out.println("Generating Initial PuzzleTile..");
 
         do {
             int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
@@ -68,36 +69,36 @@ public class Puzzle {
         this.currentTurn++;
     }
 
-
+    /**
+     * Generates a starting position, then goes into a loop to open all the nodes and tries to solve the puzzle.
+     */
     public void solve(){
-        System.out.println("Generating Initial PuzzleTile..");
         this.generateStartingPuzzleTile();
         this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, this.validPuzzleTiles.get(0));
 
-        System.out.println("Solving Puzzle..");
-        solvePuzzle();
+        this.solvePuzzle();
 
-        final long endTime = System.nanoTime();
-        final long duration = (endTime - this.startTime) / 1_000_000_000;
+        final double endTime = System.nanoTime();
+        final double duration = (endTime - this.startTime) / 1_000_000;
 
-        System.out.println("Puzzle Solved!");
-        System.out.println(duration);
+        System.out.format("Duration taken in milli seconds: " + duration);
     }
 
     /**
      * Loops through the lowest cost Puzzle Tiles, checks
      */
     private void solvePuzzle() {
+        System.out.println("Solving Puzzle..");
 
         while(!this.isPuzzleSolved(this.getLowestCostPuzzleTile())){
-            PuzzleTile currentPuzzleTile = this.getLowestCostPuzzleTile();
+            int index = this.getLowestCostPuzzleTileIndex();
+            PuzzleTile currentPuzzleTile = this.validPuzzleTiles.get(index);
             this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, currentPuzzleTile);
-            this.movePuzzleTileToInvalidList();
-            if (this.validPuzzleTiles.size() == 0){
-                System.out.println();
-            }
-            System.out.println(currentPuzzleTile.getCurrentTurn() + " " + currentPuzzleTile.getCost());
+            this.movePuzzleTileToInvalidList(index);
         }
+
+        System.out.println("Puzzle Solved!");
+        System.out.println(this.getLowestCostPuzzleTile());
     }
 
     /**
@@ -109,22 +110,17 @@ public class Puzzle {
         return Arrays.deepEquals(currentPuzzleTile.getPuzzleTile(),this.endPosition);
     }
 
-    private void movePuzzleTileToInvalidList(){
-        this.invalidPuzzleTiles.add(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
-        this.validPuzzleTiles.remove(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
+    private void movePuzzleTileToInvalidList(int index){
+        this.invalidPuzzleTiles.add(this.validPuzzleTiles.get(index));
+        this.validPuzzleTiles.remove(this.validPuzzleTiles.get(index));
     }
 
     private PuzzleTile getLowestCostPuzzleTile(){
+        return this.validPuzzleTiles.stream().min(Comparator.comparing(PuzzleTile::getFn).thenComparing(PuzzleTile::getCost)).get();
+    }
 
-            List<PuzzleTile> list = this.validPuzzleTiles.stream().filter(a -> a.getFn() == this.validPuzzleTiles.stream().min(Comparator.comparing(PuzzleTile::getFn)).get().getFn()).collect(Collectors.toList());
-            if (list.size() > 2){
-               return list.stream().min(Comparator.comparing(PuzzleTile::getCost)).get();
-            }
-
-                Optional<PuzzleTile> result = this.validPuzzleTiles
-                        .stream()
-                        .min(Comparator.comparing(puzzleTile -> puzzleTile.getFn()));
-
-            return result.get();
+    private int getLowestCostPuzzleTileIndex(){
+        PuzzleTile puzzleTile = this.getLowestCostPuzzleTile();
+        return this.validPuzzleTiles.indexOf(puzzleTile);
     }
 }
