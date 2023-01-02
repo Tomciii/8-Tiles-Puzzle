@@ -7,7 +7,7 @@ import java.util.function.Function;
  */
 public class ManhattenDistanceCostCalculator {
 
-    public static Function<int[][],Integer> calculateTotalManhattenDistance = (puzzleTile) -> {
+    public static Function<int[][],Integer> calculateCost = (puzzleTile) -> {
         int result = 0;
 
         for (int i = 0; i < puzzleTile.length; i++){

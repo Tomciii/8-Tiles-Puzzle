@@ -123,7 +123,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
     }
 
     private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
@@ -135,7 +135,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
     }
 
     public boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
@@ -151,7 +151,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
     }
 
     private int[][] copyArray(int[][] basePuzzleTile){
@@ -174,7 +174,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, MisplacedTilesDistanceCostCalculator.calculateCost.apply(basePuzzleTile)));
     }
 
     public int[][] getRandomPuzzleTile(){
@@ -182,7 +182,7 @@ public class PuzzleTileHelper {
         final int widthOfArray = 3;
         final int[][] result = new int[lengthOfArray][widthOfArray];
 
-        final int[] randomNumbers = this.getRandomNumbers(lengthOfArray,widthOfArray);
+        final int[] randomNumbers = this.getRandomNumbers(lengthOfArray, widthOfArray);
         int index = 0;
 
         for (int i = 0; i < result.length; i++){

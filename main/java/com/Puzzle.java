@@ -3,12 +3,12 @@ package com;
 import java.util.*;
 import java.util.function.Function;
 
-
 /**
  * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
  */
 public class Puzzle {
 
+    private final long startTime = System.nanoTime();
     final private PuzzleTileHelper puzzleTileHelper;
     private int currentTurn;
     Function<int[][], Integer> costCalculator;
@@ -56,20 +56,26 @@ public class Puzzle {
     }
 
     public void solve(){
+        System.out.println("Generating Initial PuzzleTile..");
         this.generateStartingPuzzleTile();
         this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, this.validPuzzleTiles.get(0));
 
-        while(!this.isPuzzleSolved(this.pickLowestCostPuzzleTile())){
-            PuzzleTile puzzleTile = this.pickLowestCostPuzzleTile();
-            System.out.println("Generating New PuzzleTiles");
-            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, puzzleTile);
-            this.movePuzzleTileToInvalidList();
-            System.out.println(puzzleTile.getCost());
-            System.out.println("valid list: " + this.validPuzzleTiles.size());
-            System.out.println("invalid list: " + this.invalidPuzzleTiles.size());
-        }
+        System.out.println("Solving Puzzle..");
+        solvePuzzle();
+
+        final long endTime = System.nanoTime();
+        final long duration = (endTime - this.startTime) / 1_000_000_000;
 
         System.out.println("Puzzle Solved!");
+        System.out.println(duration);
+    }
+
+    private void solvePuzzle() {
+        while(!this.isPuzzleSolved(this.getLowestCostPuzzleTile())){
+            PuzzleTile puzzleTile = this.getLowestCostPuzzleTile();
+            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleTiles, this.invalidPuzzleTiles, puzzleTile);
+            this.movePuzzleTileToInvalidList();
+        }
     }
 
     private boolean isPuzzleSolved(PuzzleTile puzzleTile){
@@ -80,7 +86,8 @@ public class Puzzle {
         this.invalidPuzzleTiles.add(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
         this.validPuzzleTiles.remove(this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get());
     }
-    private PuzzleTile pickLowestCostPuzzleTile(){
+
+    private PuzzleTile getLowestCostPuzzleTile(){
         return this.validPuzzleTiles.stream().min(Comparator.comparing(puzzleTile -> puzzleTile.getFn())).get();
     }
 }

@@ -13,7 +13,6 @@ public class PuzzleTile {
         return cost;
     }
 
-
     /**
      * Cost is either determined through manhatten distance or misplaced tiles.
      */

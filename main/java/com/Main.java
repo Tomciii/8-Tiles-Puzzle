@@ -1,5 +1,6 @@
 package com;
 
+import com.costCalculator.ManhattenDistanceCostCalculator;
 import com.costCalculator.MisplacedTilesDistanceCostCalculator;
 
 /**
@@ -7,7 +8,7 @@ import com.costCalculator.MisplacedTilesDistanceCostCalculator;
  */
 public class Main {
     public static void main(String[] args) {
-        Puzzle puzzle = new Puzzle(MisplacedTilesDistanceCostCalculator.calculateMisplacedTiles);
+        Puzzle puzzle = new Puzzle(ManhattenDistanceCostCalculator.calculateCost);
         puzzle.solve();
     }
 }

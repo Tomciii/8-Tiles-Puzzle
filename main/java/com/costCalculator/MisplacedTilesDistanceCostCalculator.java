@@ -6,7 +6,7 @@ import java.util.function.Function;
  * Calculates the cost with the misplaced tiles method.
  */
 public class MisplacedTilesDistanceCostCalculator {
-    public static Function<int[][],Integer> calculateMisplacedTiles = (puzzleTile) -> {
+    public static Function<int[][],Integer> calculateCost = (puzzleTile) -> {
         int result = 0;
 
         int index = 0;
