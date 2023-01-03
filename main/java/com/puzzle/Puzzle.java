@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
- * The Puzzle initializes with a solvable PuzzleTile and then executes the algorithm logic.
+ * The Puzzle initializes with a solvable PuzzleGrid and then executes the algorithm logic.
  */
 public class Puzzle {
 
@@ -17,9 +17,9 @@ public class Puzzle {
     private final double startTime = System.nanoTime();
 
     /**
-     * An instance of the PuzzleTileHelper class.
+     * An instance of the PuzzleGridHelper class.
      */
-    private final PuzzleGridHelper puzzleTileHelper;
+    private final PuzzleGridHelper puzzleGridHelper;
     private int currentTurn;
 
     /**
@@ -33,37 +33,37 @@ public class Puzzle {
     private final int[][] endPosition = {{0,1,2},{3,4,5},{6,7,8}};
 
     /**
-     * The validPuzzleTiles list contains all PuzzleTiles that have not been traversed yet.
+     * The validPuzzleGrids list contains all PuzzleGrids that have not been traversed yet.
      */
     private List<PuzzleGrid> validPuzzleGrids;
 
     /**
-     * The validPuzzleTiles list contains all PuzzleTiles that have been traversed.
+     * The invalidPuzzleGrids list contains all PuzzleGrids that have been traversed.
      */
     private List<PuzzleGrid> invalidPuzzleGrids;
 
     public Puzzle(Function<int[][], Integer> costCalculator){
         this.costCalculator = costCalculator;
         this.currentTurn = 0;
-        this.puzzleTileHelper = new PuzzleGridHelper(costCalculator);
+        this.puzzleGridHelper = new PuzzleGridHelper(costCalculator);
         this.validPuzzleGrids = new ArrayList<>();
         this.invalidPuzzleGrids = new ArrayList<>();
     }
 
     /**
-     * Generates the starting PuzzleGrid, which has to be a solvable PuzzleTile.
+     * Generates the starting PuzzleGrid, which has to be a solvable PuzzleGrid.
      */
-    private void generateStartingPuzzleTile(){
+    private void generateStartingPuzzleGrid(){
         PuzzleGrid startPosition;
 
         logger.info("Generating initial PuzzleGrid...");
 
         do {
-            int[][] puzzleTile = this.puzzleTileHelper.getRandomPuzzleTile();
-            startPosition = new PuzzleGrid(puzzleTile,
+            int[][] puzzleGrid = this.puzzleGridHelper.getRandomPuzzleGrid();
+            startPosition = new PuzzleGrid(puzzleGrid,
                     this.currentTurn,
-                    this.costCalculator.apply(puzzleTile),
-                    this.puzzleTileHelper.isSolvable(puzzleTile)
+                    this.costCalculator.apply(puzzleGrid),
+                    this.puzzleGridHelper.isSolvable(puzzleGrid)
                 );
         } while (!startPosition.isSolvable());
 
@@ -76,8 +76,8 @@ public class Puzzle {
      * Generates a starting position, then goes into a loop to open all the nodes and tries to solve the puzzle.
      */
     public void solve(){
-        this.generateStartingPuzzleTile();
-        this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleGrids, this.invalidPuzzleGrids, this.validPuzzleGrids.get(0));
+        this.generateStartingPuzzleGrid();
+        this.puzzleGridHelper.generateValidPuzzleGrids(this.validPuzzleGrids, this.invalidPuzzleGrids, this.validPuzzleGrids.get(0));
 
         this.solvePuzzle();
 
@@ -88,43 +88,43 @@ public class Puzzle {
     }
 
     /**
-     * Loops through the lowest cost Puzzle Tiles, checks
+     * Loops through the lowest cost Puzzle Grids, checks
      */
     private void solvePuzzle() {
 
         logger.info("Solving Puzzle..");
 
-        while(!this.isPuzzleSolved(this.getLowestCostPuzzleTile())){
-            int index = this.getLowestCostPuzzleTileIndex();
-            PuzzleGrid currentPuzzleTile = this.validPuzzleGrids.get(index);
-            this.puzzleTileHelper.generateValidPuzzleTiles(this.validPuzzleGrids, this.invalidPuzzleGrids, currentPuzzleTile);
-            this.movePuzzleTileToInvalidList(index);
+        while(!this.isPuzzleSolved(this.getLowestCostPuzzleGrid())){
+            int index = this.getLowestCostPuzzleGridIndex();
+            PuzzleGrid currentPuzzleGrid = this.validPuzzleGrids.get(index);
+            this.puzzleGridHelper.generateValidPuzzleGrids(this.validPuzzleGrids, this.invalidPuzzleGrids, currentPuzzleGrid);
+            this.movePuzzleGridToInvalidList(index);
         }
 
         logger.info("Puzzle Solved!");
-        logger.info(this.getLowestCostPuzzleTile().toString());
+        logger.info(this.getLowestCostPuzzleGrid().toString());
     }
 
     /**
-     * Compares the currentPuzzleTile with the endposition.
-     * @param currentPuzzleTile
+     * Compares the currentPuzzleGrid with the endposition.
+     * @param currentPuzzleGrid
      * @return
      */
-    private boolean isPuzzleSolved(PuzzleGrid currentPuzzleTile){
-        return Arrays.deepEquals(currentPuzzleTile.getPuzzleGrid(),this.endPosition);
+    private boolean isPuzzleSolved(PuzzleGrid currentPuzzleGrid){
+        return Arrays.deepEquals(currentPuzzleGrid.getPuzzleGrid(),this.endPosition);
     }
 
-    private void movePuzzleTileToInvalidList(int index){
+    private void movePuzzleGridToInvalidList(int index){
         this.invalidPuzzleGrids.add(this.validPuzzleGrids.get(index));
         this.validPuzzleGrids.remove(this.validPuzzleGrids.get(index));
     }
 
-    private PuzzleGrid getLowestCostPuzzleTile(){
+    private PuzzleGrid getLowestCostPuzzleGrid(){
         return this.validPuzzleGrids.stream().min(Comparator.comparing(PuzzleGrid::getFn).thenComparing(PuzzleGrid::getCost)).get();
     }
 
-    private int getLowestCostPuzzleTileIndex(){
-        PuzzleGrid puzzleTile = this.getLowestCostPuzzleTile();
-        return this.validPuzzleGrids.indexOf(puzzleTile);
+    private int getLowestCostPuzzleGridIndex(){
+        PuzzleGrid puzzleGrid = this.getLowestCostPuzzleGrid();
+        return this.validPuzzleGrids.indexOf(puzzleGrid);
     }
 }

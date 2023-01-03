@@ -3,7 +3,7 @@ package com.puzzle;
 import java.util.Arrays;
 
 /**
- * A PuzzleTile represents a puzzleBoard and holds information about whether it's solvable or not.
+ * A PuzzleGrid represents a puzzleBoard and holds information about whether it's solvable or not.
  * Designed to be immutable.
  */
 public class PuzzleGrid {
@@ -15,12 +15,12 @@ public class PuzzleGrid {
     }
 
     /**
-     * Cost is either determined through manhatten distance or misplaced tiles.
+     * Cost is either determined through manhatten distance or misplaced grids.
      */
     private int cost;
 
     /**
-     * Only used for the initializing PuzzleTile
+     * Only used for the initializing PuzzleGrid
      */
     private boolean isSolvable;
 
@@ -32,14 +32,14 @@ public class PuzzleGrid {
     private int currentTurn;
 
     /**
-     * For the initial PuzzleTile, this constructor is called.
-     * @param puzzleTile
+     * For the initial PuzzleGrid, this constructor is called.
+     * @param puzzleGrid
      * @param currentTurn
      * @param cost
      * @param isSolvable
      */
-    public PuzzleGrid(int[][] puzzleTile, int currentTurn, int cost, boolean isSolvable){
-        this.puzzleGrid = puzzleTile;
+    public PuzzleGrid(int[][] puzzleGrid, int currentTurn, int cost, boolean isSolvable){
+        this.puzzleGrid = puzzleGrid;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
@@ -47,13 +47,13 @@ public class PuzzleGrid {
     }
 
     /**
-     * For non-initial PuzzleTiles, this constructor is called.
-     * @param puzzleTile
+     * For non-initial PuzzleGrids, this constructor is called.
+     * @param puzzleGrids
      * @param currentTurn
      * @param cost
      */
-    public PuzzleGrid(int[][] puzzleTile, int currentTurn, int cost){
-        this.puzzleGrid = puzzleTile;
+    public PuzzleGrid(int[][] puzzleGrids, int currentTurn, int cost){
+        this.puzzleGrid = puzzleGrids;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
@@ -66,8 +66,8 @@ public class PuzzleGrid {
 
     @Override
     public String toString() {
-        return "PuzzleTile{" +
-                "puzzleTile=" + Arrays.deepToString(puzzleGrid) +
+        return "PuzzleGrid{" +
+                "puzzleGrid=" + Arrays.deepToString(puzzleGrid) +
                 ", earliestTurn=" + currentTurn +
                 ", cost=" + cost +
                 ", fn=" + fn +

@@ -11,26 +11,26 @@ import java.util.List;
 
 public class PuzzleGridHelperTest {
 
-    private PuzzleGridHelper puzzleTileHelper = new PuzzleGridHelper(ManhattenDistanceCostCalculator.calculateCost);
+    private PuzzleGridHelper puzzleGridHelper = new PuzzleGridHelper(ManhattenDistanceCostCalculator.calculateCost);
 
     @Test
     public void testIsContainedInList(){
 
-        List<PuzzleGrid> puzzleTileList = this.getListWithPuzzleTile();
-        PuzzleGrid puzzleTile = this.getPuzzleTile();
+        List<PuzzleGrid> puzzleGridList = this.getListWithPuzzleGrid();
+        PuzzleGrid puzzleGrid = this.getPuzzleGrid();
 
-        Assertions.assertTrue(this.puzzleTileHelper.isContainedInList(puzzleTileList,puzzleTile.getPuzzleGrid()));
+        Assertions.assertTrue(this.puzzleGridHelper.isContainedInList(puzzleGridList,puzzleGrid.getPuzzleGrid()));
     }
 
-    private List<PuzzleGrid> getListWithPuzzleTile() {
+    private List<PuzzleGrid> getListWithPuzzleGrid() {
         List<PuzzleGrid> list = new ArrayList<>();
         int[][] puzzle = {{0,1,2},{3,4,5},{6,7,8}};
-        PuzzleGrid tile = new PuzzleGrid(puzzle,0,0);
-        list.add(tile);
+        PuzzleGrid grid = new PuzzleGrid(puzzle,0,0);
+        list.add(grid);
         return list;
     }
 
-    private PuzzleGrid getPuzzleTile(){
+    private PuzzleGrid getPuzzleGrid(){
         int[][] puzzle = {{0,1,2},{3,4,5},{6,7,8}};
        return new PuzzleGrid(puzzle,0,0);
     }

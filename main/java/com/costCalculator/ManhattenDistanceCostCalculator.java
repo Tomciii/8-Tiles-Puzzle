@@ -7,12 +7,12 @@ import java.util.function.Function;
  */
 public class ManhattenDistanceCostCalculator {
 
-    public static Function<int[][],Integer> calculateCost = (puzzleTile) -> {
+    public static Function<int[][],Integer> calculateCost = (puzzleGrid) -> {
         int result = 0;
 
-        for (int i = 0; i < puzzleTile.length; i++){
-            for (int j = 0; j < puzzleTile[0].length; j++){
-                int tileNumber = puzzleTile[i][j];
+        for (int i = 0; i < puzzleGrid.length; i++){
+            for (int j = 0; j < puzzleGrid[0].length; j++){
+                int tileNumber = puzzleGrid[i][j];
 
                 if (tileNumber == 0){
                     result += i;
