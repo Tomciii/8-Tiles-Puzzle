@@ -59,20 +59,20 @@ public class Puzzle {
      * Generates the starting PuzzleGrid, which has to be a solvable PuzzleGrid.
      */
     private void generateStartingPuzzleGrid(){
-        PuzzleGrid startPosition;
+        PuzzleGrid startingPuzzleGrid;
 
         logger.info("Generating initial PuzzleGrid...");
 
         do {
             int[][] puzzleGrid = this.puzzleGridHelper.getRandomPuzzleGrid();
-            startPosition = new PuzzleGrid(puzzleGrid,
+            startingPuzzleGrid = new PuzzleGrid(puzzleGrid,
                     this.currentTurn,
                     this.costCalculator.apply(puzzleGrid),
                     this.puzzleGridHelper.isSolvable(puzzleGrid)
                 );
-        } while (!startPosition.isSolvable());
+        } while (!startingPuzzleGrid.isSolvable());
 
-        this.validPuzzleGrids.add(startPosition);
+        this.validPuzzleGrids.add(startingPuzzleGrid);
         logger.info(this.validPuzzleGrids.get(0).toString());
         this.currentTurn++;
     }
