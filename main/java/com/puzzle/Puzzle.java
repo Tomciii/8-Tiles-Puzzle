@@ -20,6 +20,7 @@ public class Puzzle {
      * An instance of the PuzzleGridHelper class.
      */
     private final PuzzleGridHelper puzzleGridHelper;
+
     private int currentTurn;
 
     /**
@@ -42,6 +43,10 @@ public class Puzzle {
      */
     private List<PuzzleGrid> invalidPuzzleGrids;
 
+    /**
+     * The Constructor for the Puzzle class.
+     * @param costCalculator
+     */
     public Puzzle(Function<int[][], Integer> costCalculator){
         this.costCalculator = costCalculator;
         this.currentTurn = 0;
@@ -114,15 +119,27 @@ public class Puzzle {
         return Arrays.deepEquals(currentPuzzleGrid.getPuzzleGrid(),this.endPosition);
     }
 
+    /**
+     * Moves the current PuzzleGrid from the validPuzzleGrid list to the invalidPuzzleGrid list.
+     * @param index
+     */
     private void movePuzzleGridToInvalidList(int index){
         this.invalidPuzzleGrids.add(this.validPuzzleGrids.get(index));
         this.validPuzzleGrids.remove(this.validPuzzleGrids.get(index));
     }
 
+    /**
+     * Gets the lowest PuzzleGrid object from the validPuzzleGrid list.
+     * @return
+     */
     private PuzzleGrid getLowestCostPuzzleGrid(){
         return this.validPuzzleGrids.stream().min(Comparator.comparing(PuzzleGrid::getFn).thenComparing(PuzzleGrid::getCost)).get();
     }
 
+    /**
+     * Gets the lowest PuzzleGrid index from the validPuzzleGrid list.
+     * @return
+     */
     private int getLowestCostPuzzleGridIndex(){
         PuzzleGrid puzzleGrid = this.getLowestCostPuzzleGrid();
         return this.validPuzzleGrids.indexOf(puzzleGrid);
