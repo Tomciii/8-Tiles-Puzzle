@@ -27,7 +27,7 @@ public class PuzzleGridHelper {
 
     public boolean isSolvable(int[][] puzzleGrid){
 
-        boolean isPuzzleSidesEven = this.calculateIsPuzzleEven(puzzleGrid);
+        boolean isPuzzleSidesEven = this.isPuzzleGridEven(puzzleGrid);
         boolean isPuzzleValuesEven = this.isPuzzleValuesEven(puzzleGrid);
 
         return isPuzzleSidesEven ^ isPuzzleValuesEven;
@@ -60,7 +60,7 @@ public class PuzzleGridHelper {
         return result % 2 == 0;
     }
 
-    private boolean calculateIsPuzzleEven(int[][] puzzleGrid) {
+    private boolean isPuzzleGridEven(int[][] puzzleGrid) {
         return puzzleGrid.length * puzzleGrid[0].length % 2 == 0;
     }
 
