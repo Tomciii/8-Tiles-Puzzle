@@ -1,6 +1,7 @@
 package com;
 
 import com.costCalculator.ManhattenDistanceCostCalculator;
+import com.puzzle.Puzzle;
 
 /**
  * Entrypoint of the program.

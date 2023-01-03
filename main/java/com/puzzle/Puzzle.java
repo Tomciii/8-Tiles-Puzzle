@@ -1,4 +1,4 @@
-package com;
+package com.puzzle;
 
 import java.util.*;
 import java.util.function.Function;

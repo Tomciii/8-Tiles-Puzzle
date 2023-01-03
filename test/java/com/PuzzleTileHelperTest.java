@@ -1,6 +1,8 @@
 package com;
 
 import com.costCalculator.ManhattenDistanceCostCalculator;
+import com.puzzle.PuzzleTile;
+import com.puzzle.PuzzleTileHelper;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
