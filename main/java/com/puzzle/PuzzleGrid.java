@@ -6,9 +6,9 @@ import java.util.Arrays;
  * A PuzzleTile represents a puzzleBoard and holds information about whether it's solvable or not.
  * Designed to be immutable.
  */
-public class PuzzleTile {
+public class PuzzleGrid {
 
-    private final int[][] puzzleBoard;
+    private final int[][] puzzleGrid;
 
     public int getCost() {
         return cost;
@@ -38,8 +38,8 @@ public class PuzzleTile {
      * @param cost
      * @param isSolvable
      */
-    public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost, boolean isSolvable){
-        this.puzzleBoard = puzzleTile;
+    public PuzzleGrid(int[][] puzzleTile, int currentTurn, int cost, boolean isSolvable){
+        this.puzzleGrid = puzzleTile;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
@@ -52,22 +52,22 @@ public class PuzzleTile {
      * @param currentTurn
      * @param cost
      */
-    public PuzzleTile(int[][] puzzleTile, int currentTurn, int cost){
-        this.puzzleBoard = puzzleTile;
+    public PuzzleGrid(int[][] puzzleTile, int currentTurn, int cost){
+        this.puzzleGrid = puzzleTile;
         this.currentTurn = currentTurn;
         this.cost = cost;
         this.fn = this.cost + this.currentTurn;
     }
 
 
-    public int[][] getPuzzleBoard() {
-        return puzzleBoard;
+    public int[][] getPuzzleGrid() {
+        return puzzleGrid;
     }
 
     @Override
     public String toString() {
         return "PuzzleTile{" +
-                "puzzleTile=" + Arrays.deepToString(puzzleBoard) +
+                "puzzleTile=" + Arrays.deepToString(puzzleGrid) +
                 ", earliestTurn=" + currentTurn +
                 ", cost=" + cost +
                 ", fn=" + fn +

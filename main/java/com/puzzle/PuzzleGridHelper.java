@@ -8,7 +8,7 @@ import java.util.function.Function;
 /**
  * The PuzzleTileHelper Class holds all the business logic for intializing and generating new PuzzleTile instances.
  */
-public class PuzzleTileHelper {
+public class PuzzleGridHelper {
 
     /**
      * Instance of the Random class.
@@ -20,7 +20,7 @@ public class PuzzleTileHelper {
      */
     final private Function<int[][], Integer> costCalculator;
 
-    public PuzzleTileHelper(Function<int[][], Integer> costCalculator){
+    public PuzzleGridHelper(Function<int[][], Integer> costCalculator){
         this.random = new Random();
         this.costCalculator = costCalculator;
     }
@@ -98,8 +98,8 @@ public class PuzzleTileHelper {
      * @param invalidPuzzleTiles
      * @param puzzleTile
      */
-    public void generateValidPuzzleTiles(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, PuzzleTile puzzleTile) {
-        int[][] basePuzzleTile = puzzleTile.getPuzzleBoard();
+    public void generateValidPuzzleTiles(List<PuzzleGrid> validPuzzleTiles, List<PuzzleGrid> invalidPuzzleTiles, PuzzleGrid puzzleTile) {
+        int[][] basePuzzleTile = puzzleTile.getPuzzleGrid();
         int currentTurn = puzzleTile.getCurrentTurn();
 
      OUTER:   for (int i = 0; i < basePuzzleTile.length; i++){
@@ -129,7 +129,7 @@ public class PuzzleTileHelper {
         }
     }
 
-    private void generateValidPuzzleSwapToRight(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToRight(List<PuzzleGrid> validPuzzleTiles, List<PuzzleGrid> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i][j + 1];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i][j  + 1] = 0;
@@ -138,10 +138,10 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleGrid(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
-    private void generateValidPuzzleSwapToLeft(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToLeft(List<PuzzleGrid> validPuzzleTiles, List<PuzzleGrid> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i][j - 1];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i][j - 1] = 0;
@@ -150,7 +150,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleGrid(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     /**
@@ -159,11 +159,11 @@ public class PuzzleTileHelper {
      * @param basePuzzleTile
      * @return
      */
-    public boolean isContainedInList(List<PuzzleTile> list, int[][] basePuzzleTile){
-            return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzleBoard(),basePuzzleTile));
+    public boolean isContainedInList(List<PuzzleGrid> list, int[][] basePuzzleTile){
+            return list.stream().anyMatch(puzzle -> Arrays.deepEquals(puzzle.getPuzzleGrid(),basePuzzleTile));
     }
 
-    private void generateValidPuzzleSwapToTop(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToTop(List<PuzzleGrid> validPuzzleTiles, List<PuzzleGrid> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i - 1][j];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i - 1][j] = 0;
@@ -172,7 +172,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleGrid(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     private int[][] copyArray(int[][] basePuzzleTile){
@@ -186,7 +186,7 @@ public class PuzzleTileHelper {
         return result;
     }
 
-    private void generateValidPuzzleSwapToBottom(List<PuzzleTile> validPuzzleTiles, List<PuzzleTile> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
+    private void generateValidPuzzleSwapToBottom(List<PuzzleGrid> validPuzzleTiles, List<PuzzleGrid> invalidPuzzleTiles, int[][] basePuzzleTile, int currentTurn, int i, int j) {
         int swapNumber = basePuzzleTile[i + 1][j];
         basePuzzleTile[i][j] = swapNumber;
         basePuzzleTile[i + 1][j] = 0;
@@ -195,7 +195,7 @@ public class PuzzleTileHelper {
             return;
         }
 
-        validPuzzleTiles.add(new PuzzleTile(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
+        validPuzzleTiles.add(new PuzzleGrid(basePuzzleTile, ++currentTurn, costCalculator.apply(basePuzzleTile)));
     }
 
     public int[][] getRandomPuzzleTile(){
